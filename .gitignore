@@ -1,4 +1,14 @@
+# default github django .gitignore
 *.log
 *.pot
 *.pyc
 local_settings.py
+
+# bin directories
+bin/
+
+# target directories
+target/
+
+# files ending with a ~
+*~
