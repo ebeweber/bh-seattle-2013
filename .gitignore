@@ -12,3 +12,6 @@ target/
 
 # files ending with a ~
 *~
+
+# db
+mmw.db

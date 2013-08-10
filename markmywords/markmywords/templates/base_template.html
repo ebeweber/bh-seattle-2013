@@ -1,0 +1,16 @@
+{% load staticfiles %}
+
+<head>
+	<title>{% block title %}{% endblock %}</title>
+
+	<!-- Every page needs to include Bootstrap & jQuery -->
+	<link href="{% static "stylesheets/bootstrap.css" %}" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="">
+	<!-- Javascript plugins -->
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<script scr="{% static "javascript/bootstrap.js" %}"></script>
+	{% block content %}{% endblock %}
+</body>
