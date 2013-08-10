@@ -135,6 +135,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
 
     ### OUR SHIT ###
+    'goals',
 )
 
 # A sample logging configuration. The only tangible logging
