@@ -118,6 +118,21 @@ body
 	background-image: url("../img/pledgeBgHover.jpg");
 }
 
+#support{
+	line-height: 75px;
+	font-size: 60px;
+	font-weight: 900;
+	display: block;
+	background-image: url("../img/pledgeBackground.jpg");
+	background-repeat: no-repeat;
+	color: white;
+	padding-left: 100px;
+}
+
+#support:hover{
+	background-image: url("../img/pledgeBgHover.jpg");
+}
+
 #map-canvas{
 	width: 40%;
 	left: 5%;
