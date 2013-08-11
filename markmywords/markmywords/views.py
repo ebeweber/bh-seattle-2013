@@ -52,10 +52,11 @@ def authorize(request, uri):
 def paypal(request):
 	amount = int(normalize_arg(request.GET['amt']))
 	distance = int(normalize_arg(request.GET['distance']))
+	date = normalize_arg(request.GET['date'])
+	time = datetime.strptime(date, '%d %b, %y')
 
 	goal = Goal(distance=distance, created_date=datetime.now(),
-		end_date=(timedelta(days=7) + datetime.now()), money=amount,
-		charity_ppid=70)
+		end_date=time, money=amount, charity_ppid=70)
 	goal.save()
 
 	return create_paypal_payment(amount, goal.id)
