@@ -120,7 +120,7 @@ def goals(request, goal_id):
 		redirect = '%sgoal/%d' % (redirect_uri, goal_id)
 		access_token = get_access_token(request, code, redirect)
 		goal = Goal.objects.get(id=goal_id)
-		#send_email(goal)
+		send_email_to_friend(goal)
 		json_object=get_workouts_in_time(request, access_token, goal)
 
 		total_miles=get_total_miles(json_object)
@@ -134,7 +134,6 @@ def goals(request, goal_id):
 			paths.append(get_points_from_path(get_specific_path(request,access_token, path)))
 		t = get_template('go.html')
 
-		pdb.set_trace()
 		html=t.render(Context({
 			'miles_goal': goal.distance/1600,
 		 	"current_progress": float(total_miles),
@@ -219,8 +218,8 @@ def send_email(goal):
 	send_mail('You created a goal', 'You made the goal to run %d miles by %s.  Good luck!' % (goal.distance, goal.end_date), 'team@ontherun.com', ['amni2015@gmail.com'], fail_silently=False)
 
 
-def send_email_to_friend(json_object):
-	send_mail('Help Support Your Friend Matthew', 'Your friend Matthew made the goal to run %d miles by %s.  Pledge money to help him out!' % (goal.distance, goal.end_date), 'team@ontherun.com', ['amni2015@gmail.com'], fail_silently=False)
+def send_email_to_friend(goal):
+	send_mail('Help Support Your Friend Matthew', 'Your friend Matthew made the goal to run %d miles by %s.  Pledge money to help him out!  You can help him by going to this <a href="127.0.0.1:8000/support/6"> address </a>' % (goal.distance, goal.end_date), 'team@ontherun.com', ['amni2015@gmail.com'], fail_silently=False)
 
 def date_to_param(date):
 	return '%d-%d-%d' % (date.year, date.month, date.day)

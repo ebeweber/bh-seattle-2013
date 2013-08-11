@@ -11,7 +11,13 @@
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
 	<script type="text/javascript" src="{% static "js/google-maps.js" %}"></script>
 	<script type="text/javascript">
-		console.log({{paths|safe}})
+		console.log({{paths}})
+		for (var i=0; i<{{paths}}.length; i++){
+			for (var j=0; j<{{paths}}[i].length; j++){
+				console.log({{paths}}[i][j][0]);
+				console.log({{paths}}[i][j][1]);
+			}
+		}
 	</script>
 	<script type="text/javascript" src="{% static "js/goal.js" %}"></script>
 
