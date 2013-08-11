@@ -156,7 +156,7 @@ span{
 	float: right;
 	/*left: 50%;*/
 }
-<<<<<<< HEAD
+
 
 #logo{
 	height: 100%;
@@ -175,7 +175,7 @@ span{
 	margin-right: 20px;
 	opacity: 0.10;
 }
-=======
+
 #playerOne, #playerTwo{
 	width: 90%;
 	margin: auto;
@@ -227,4 +227,3 @@ span{
 .ui-corner-all{
 	border-radius: 0px !important;
 }
->>>>>>> ec40eb83541a0a0c0faf99f28d3c6f77b6c372a8
