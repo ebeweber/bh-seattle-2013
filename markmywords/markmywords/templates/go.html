@@ -9,39 +9,19 @@
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
-	<script type="text/javascript" src="{% static "js/google-maps.js" %}"></script>
-	<script type="text/javascript">
-		console.log({{paths}}[0])
+		<script type="text/javascript">		console.log({{paths}})
 		console.log("++paths ");
 
-		var path_list;
-		var flightPlanCoordinates;
-
-		// {% for path in paths|safe %}
-		// 	console.log({{path}})
-		// // console.log({{coordinate}});
-		// 	// flightPlanCoordinates.push(new google.maps.LatLng(coordinate.0, coordinate.1))
-		// {% endfor %}
+		var path_list = {{paths}};
+		var flightPlanCoordinates = [];
 		
-		//iterate through all paths
-		for(var pathsIDX = 0; pathsIDX < paths_length; pathsIDX++){
-				console.log("Path: " + pathsIDX)
-			//iterate through all points on a path
-				for(var ptIDX = 0; j < total_points; ptIDX++){		
-					console.log({{path|safe}}[pathsIDX][ptIDX]);
-				}
-			// flightPlanCoordinates.push(new google.maps.LatLng(path_list[0], path_list[1]));
-		}
+		console.log(path_list);
 
-	  var flightPath = new google.maps.Polyline({
-	    path: flightPlanCoordinates,
-	    strokeColor: '#FF0000',
-	    strokeOpacity: 1.0,
-	    strokeWeight: 2
-	  });
-
-  		flightPath.setMap(map);
+		
+		
 	</script>
+	<script type="text/javascript" src="{% static "js/google-maps.js" %}"></script>
+
 	<script type="text/javascript" src="{% static "js/goal.js" %}"></script>
 
 	
