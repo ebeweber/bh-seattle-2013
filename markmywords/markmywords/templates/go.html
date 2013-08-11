@@ -44,8 +44,8 @@
 </body>
 <script>
 	
-	var playerOneValue = 89;
-	var playerTwoValue = 52;
+	var playerOneValue = 0;
+	var playerTwoValue = 0;
 	var $progressOne = $('#progressOne')
 	var $progressTwo = $('#progressTwo')
 	var $contentArea = $('.content-area')
@@ -54,7 +54,7 @@
 			value: playerOneValue,
 			change: function() {
 				progressOne.text($("#playerOne").progressbar("value") + "%");
-				alert(1)
+				alert()
 			},
 			complete:function(){
 				var text = "<p class='complete-text'>Micheal Wins!</p>";
@@ -72,8 +72,8 @@
 				progressTwo.text("Complete!");
 			}
 		});
-		$('#progressOne').text($('#playerOne').progressbar("value") + "%");
-		$('#progressTwo').text($('#playerTwo').progressbar("value") + "%");
+		$('#progressOne').text("Loading...");
+		$('#progressTwo').text("Loading...");
 	});
 
 	</script>

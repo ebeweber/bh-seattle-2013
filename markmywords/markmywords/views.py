@@ -32,7 +32,6 @@ API_URL = 'https://api.runkeeper.com/fitnessActivities'
 
 
 logging.basicConfig(level=logging.INFO)
-
 paypalrestsdk.configure({
   "mode": "sandbox", # sandbox or live
   "client_id": "AWs7BhBcB_vM9tUa-Y-i_kc6hvWL59rKhTU_Y4ozRo9EzGEXicjdoc2VDT3U",
@@ -75,7 +74,7 @@ def update_goal_info(request, goal_id):
 	goal = Goal.objects.get(id=goal_id)
 	json_object=get_workouts_in_time(request, access_token, goal)
 
-	total_miles=get_total_miles(json_object)
+	total_miles=get_total_miles(json_object, goal)
 	paths=[]
 	paths.append(get_points_from_path(get_specific_path(request,access_token, "/223098561")))
 
@@ -95,7 +94,7 @@ def update_goal_info(request, goal_id):
 		 "days": days, 
 		 "hours": hours, 
 		 "minutes": minutes,
-		 "percent_completed":float(get_total_miles(json_object))/float(goal.distance)*100/1600,
+		 "percent_completed":float(get_total_miles(json_object, goal))/float(goal.distance)*100/1600,
 		 "paths":simplejson.dumps(paths)})
 
 	return HttpResponse(simplejson.dumps(json), 'application/json')
@@ -114,7 +113,7 @@ def goals(request, goal_id):
 		goal = Goal.objects.get(id=goal_id)
 		json_object=get_workouts_in_time(request, access_token, goal)
 
-		total_miles=get_total_miles(json_object)
+		total_miles=get_total_miles(json_object, goal)
 		paths=[]
 		paths.append(get_points_from_path(get_specific_path(request,access_token, "/223098561")))
 
@@ -132,7 +131,7 @@ def goals(request, goal_id):
 			"distance": goal.distance, 
 			"time_left":2, "days": days, 
 			"hours": hours, "minutes": minutes,
-		 	"percent_completed": float(get_total_miles(json_object))/float(goal.distance)*100/1600,
+		 	"percent_completed": float(get_total_miles(json_object, goal))/float(goal.distance)*100/1600,
 		 	"paths":simplejson.dumps(paths), 
 		 	'access_token': access_token, 
 		 	'goal_id': goal_id}))
@@ -193,8 +192,9 @@ def get_total_calories(json_object):
 def get_time_left(goal):
 	return goal.end_date.replace(tzinfo=None) - datetime.utcnow()
 
-def get_total_miles(json_object):
-	return sum([item['total_distance'] for item in json_object])
+def get_total_miles(json_object, goal):
+	created_time = goal.created_date.replace(tzinfo=None)
+	return sum([item['total_distance'] for item in json_object if ((datetime.strptime(normalize_arg(item["start_time"]), '%a, %d %b %Y %H:%M:%S').replace(tzinfo=None) + timedelta(hours=7)) > created_time)])
 
 
 def get_points_from_path(path):
