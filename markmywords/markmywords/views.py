@@ -21,6 +21,8 @@ API_ACCESS_TOKEN_URL = 'https://runkeeper.com/apps/token'
 client_id = 'fde6b0c09d464fa2a9155118dbb0d6da'
 client_secret = '3d397e2bfb054a48a876e0dc5596dab1'
 redirect_uri = 'http://127.0.0.1:8000/'
+API_URL = 'https://api.runkeeper.com/user'
+
 
 def authorize(request):
 	payload = {'response_type': 'code',
@@ -37,11 +39,10 @@ def index(request):
 		# The user is authorized to use the app
 		code = request.GET['code']
 		code = normalize_arg(code)
-		print(code)
 		state = request.GET['state']
 		
 		access_token = get_access_token(request, code)
-		pdb.set_trace()
+		get_profile_id(request, access_token)
 
 		t = get_template('index.html')
 		html = t.render(Context({}))
@@ -61,6 +62,12 @@ def get_access_token(request,code):
 	
 	req = requests.post(API_ACCESS_TOKEN_URL, data=payload)
 	data = req.json()
-	pdb.set_trace()
 	return data.get('access_token')
-	
+
+def get_profile_id(request, token):
+	payload = {'access_token': token,}
+	headers = {'Authorization': "Bearer %s" % token,
+				'Accept': 'application/vnd.com.runkeeper.User+json'}
+	response=requests.get(API_URL, headers=headers)
+	print (response.json().get('userID'))
+
