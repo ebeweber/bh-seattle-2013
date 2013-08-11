@@ -18,6 +18,11 @@ $(document).ready(function() {
 			"&date=" + date + "&amt=" + amt;
 	})
 
+	$("#date").datepicker({
+		defaultDate: new Date(),
+		dateFormat:"d M,y",
+		minDate: 0,
+		maxDate: "+1M"});
 	// pledge.hover(function(){
 	// 	$(this).css({ "background-image": "url('../img/pledgeBgHover.jpg')" });
 	// })
