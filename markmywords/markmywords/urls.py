@@ -19,5 +19,6 @@ urlpatterns = patterns('',
     # Routing to the index page
     url(r'^$', 'markmywords.views.index', name='index'),
     url(r'^authorize', 'markmywords.views.authorize', name='authorize'),
+    url(r'^paypal', 'markmywords.views.paypal', name='paypal'),
 
 )
