@@ -5,7 +5,9 @@
 	<link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}"/>
 	<link href='http://fonts.googleapis.com/css?family=Lato:100;900' rel='stylesheet' type='text/css'>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-	<script type="text/javascript" src="{% static "js/main.js" %}"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
 	<script type="text/javascript" src="{% static "js/google-maps.js" %}"></script>
 	<script type="text/javascript">
@@ -20,7 +22,11 @@
 		<div class="center-frame">
 			<div class="green-background"></div>
 			<div class="white-background">
-				<div class="progress-bar" style="color: white; text-align: center">Work in progress</div>
+				<div class="progress-bar" style="color: white; text-align: center">
+					<div id="playerTwo"><div id="progressTwo"></div></div>
+					<div id="playerOne"><div id="progressOne"></div></div>
+				</div>
+				<div class="content-area">
 				<div id="map-canvas" style="color: white; text-align: center"></div>
 				<div class="stat-column" style="color: white; text-align: center">
 					<h1>Your RunKeeper Statistics</h1>
@@ -28,8 +34,42 @@
 					<p>Average Speed: {{avg_speed}}mph </p>
 					<p>Percentage: {{percent_completed}}%</p>
 				</div>
+				</div>
 			</div>	
 		</div>
 	</div>
 </body>
+<script>
+	
+	var playerOneValue;
+	var playerTwoValue;
+	var $progressOne = $('#progressOne')
+	var $progressTwo = $('#progressTwo')
+	var $contentArea = $('.content-area')
+	$(function() {
+		$("#playerOne").progressbar({
+			value: 99,
+			change: function() {
+				progressOne.text($("#playerOne").progressbar("value") + "%");
+			},
+			complete:function(){
+				var text = "<p class='complete-text'>Micheal Wins!</p>";
+				// text += "<img src='img/running.svg'>";
+				$contentArea.html(text);
+			}
+		});
+		$("#playerTwo").progressbar({
+			value: 52,
+			change: function() {
+				progressTwo.text($("#playerTwo").progressbar("value") + "%");
+			},
+			complete: function() {
+				progressTwo.text("Complete!");
+			}
+		});
+		$('#progressOne').text($('#playerOne').progressbar("value") + "%");
+		$('#progressTwo').text($('#playerTwo').progressbar("value") + "%");
+	});
+
+	</script>
 </html>

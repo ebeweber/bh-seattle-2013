@@ -119,21 +119,83 @@ body
 }
 
 #map-canvas{
-	width: 50%;
-	height: 80%;
+	width: 40%;
+	left: 5%;
+	height: 90%;
+	top: 5%;
 	bottom: 0%;
+	border: 1px solid #BDD630;
 	float:left;
 	
 }
+.content-area{
+	background-color: red;
+}
 .progress-bar{
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	padding-top: 15px;
 	height: 20%;
-	background-color: orange;
+	background-color: white;
 	width: 100%;
+	border-bottom: 1px solid #BDD630;
 }
 .stat-column{
 	width: 50%;
 	height: 80%;
-	background-color: red;
+	/*background-color: white;*/
 	float: right;
 	/*left: 50%;*/
+}
+#playerOne, #playerTwo{
+	width: 90%;
+	margin: auto;
+	margin-bottom: 2px;
+}
+#playerOne .ui-progressbar-value{
+	background: #F34541;
+}
+#playerTwo .ui-progressbar-value{
+	background: #446CB3;
+}
+
+#progressTwo{
+	position: absolute;
+    left: 49%;
+    top: 14px;
+    font-weight: 900;
+    /*font-weight: bold;*/
+    font-size: 30px;
+    font-family: 'Lato', sans-serif;
+    
+}
+#progressOne{
+	position: absolute;
+    left: 49%;
+    top: 55px;
+    font-weight: 900;
+    /*font-weight: bold;*/
+    font-size: 30px;
+    font-family: 'Lato', sans-serif;
+    
+}
+.content-area{
+	height: 80%;
+	width: 100%;
+
+	/*border: 1px solid black;*/
+}
+.content-area .complete-text{
+	text-align: center;
+}
+.content-area img{
+	margin-left: 39%;
+	height: 250px;
+}
+.ui-widget-content{
+	border: 1px solid #BDD630 !important;
+}
+.ui-corner-all{
+	border-radius: 0px !important;
 }
