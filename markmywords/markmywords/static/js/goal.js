@@ -10,6 +10,7 @@ $(document).ready(function() {
 				
 
 				$("#distance")[0].innerHTML = data.current_progress
+				console.log("Successs");
 			 
 
 			 });}, 3000);

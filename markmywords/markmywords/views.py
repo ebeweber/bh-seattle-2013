@@ -95,7 +95,7 @@ def update_goal_info(request, goal_id):
 		 "days": days, 
 		 "hours": hours, 
 		 "minutes": minutes,
-		 "percent_completed":float(get_total_miles(json_object)/goal.distance*100/1600),
+		 "percent_completed":float(get_total_miles(json_object))/float(goal.distance)*100/1600,
 		 "paths":simplejson.dumps(paths)})
 
 	return HttpResponse(simplejson.dumps(json), 'application/json')
@@ -124,7 +124,6 @@ def goals(request, goal_id):
 		minutes = (timeleft - timedelta(seconds=hours*60*60)).seconds / 60
 		t = get_template('go.html')
 
-		pdb.set_trace()
 		html=t.render(Context({
 			'miles_goal': goal.distance/1600,
 		 	"current_progress": float(total_miles),
