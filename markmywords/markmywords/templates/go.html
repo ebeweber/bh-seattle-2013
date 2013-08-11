@@ -41,25 +41,25 @@
 </body>
 <script>
 	
-	var playerOneValue;
-	var playerTwoValue;
+	var playerOneValue = 89;
+	var playerTwoValue = 52;
 	var $progressOne = $('#progressOne')
 	var $progressTwo = $('#progressTwo')
 	var $contentArea = $('.content-area')
 	$(function() {
 		$("#playerOne").progressbar({
-			value: 99,
+			value: playerOneValue,
 			change: function() {
 				progressOne.text($("#playerOne").progressbar("value") + "%");
 			},
 			complete:function(){
 				var text = "<p class='complete-text'>Micheal Wins!</p>";
-				// text += "<img src='img/running.svg'>";
+				text += "<img src='{% static 'img/running.svg'%}'>";
 				$contentArea.html(text);
 			}
 		});
 		$("#playerTwo").progressbar({
-			value: 52,
+			value: playerTwoValue,
 			change: function() {
 				progressTwo.text($("#playerTwo").progressbar("value") + "%");
 			},
