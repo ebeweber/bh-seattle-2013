@@ -8,7 +8,14 @@ $(document).ready(function() {
 
 	//event listeners
 	pledge.click(function(){
-		window.location="http://localhost:8000/paypal";
+		var distance = encodeURIComponent($('#distance')[0].value
+			.replace(/(^[\s]+|[\s]+$)/g, ''));
+		var date = encodeURIComponent($('#date')[0].value);
+		var amt = $('#amt')[0].value;
+		amt = encodeURIComponent(amt.substring(1, amt.length));
+		
+			window.location="http://localhost:8000/paypal?distance=" + distance + 
+			"&date=" + date + "&amt=" + amt;
 	})
 
 	// pledge.hover(function(){

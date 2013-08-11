@@ -8,6 +8,7 @@ from django.template import Context
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from goals.models import Goal
+from datetime import datetime, date, time, timedelta
 
 import requests
 import urllib
@@ -48,7 +49,15 @@ def authorize(request, uri):
 		urllib.urlencode(payload)))
 
 def paypal(request):
-	return create_paypal_payment()
+	amount = int(normalize_arg(request.GET['amt']))
+	distance = int(normalize_arg(request.GET['distance']))
+
+	goal = Goal(distance=distance, created_date=datetime.now(),
+		end_date=(timedelta(days=7) + datetime.now()), money=amount,
+		charity_ppid=70)
+	goal.save()
+
+	return create_paypal_payment(amount, goal.id)
 
 
 def index(request):
@@ -143,8 +152,7 @@ def send_email():
 def date_to_param(date):
 	return '%d-%d-%d' % (date.year, date.month, date.day)
 
-def create_paypal_payment():
-
+def create_paypal_payment(amount, goal_id):
 	payment = paypalrestsdk.Payment({
 	  "intent":  "sale",
 
@@ -156,7 +164,7 @@ def create_paypal_payment():
 
 	  # ###Redirect URLs
 	  "redirect_urls": {
-	    "return_url": "http://127.0.0.1:8000/goal",
+	    "return_url": "http://127.0.0.1:8000/goal/%d" % goal_id,
 	    "cancel_url": "http://localhost:3000/" },
 
 	  # ###Transaction
@@ -170,14 +178,14 @@ def create_paypal_payment():
 	      "items": [{
 	        "name": "item",
 	        "sku": "item",
-	        "price": "15.00",
+	        "price": amount,
 	        "currency": "USD",
 	        "quantity": 1 }]},
 
 	    # ###Amount
 	    # Let's you specify a payment amount.
 	    "amount":  {
-	      "total":  "15.00",
+	      "total":  amount,
 	      "currency":  "USD" },
 	    "description":  "This is the payment transaction description." } ] } )
 
@@ -188,7 +196,7 @@ def create_paypal_payment():
 	  for link in payment.links:
 	    if link.method == "REDIRECT":
 	      redirect_url = link.href
-	      print("Redirect for approval: %s"%(redirect_url))
+	      print("Redirect for approval: %s" % (redirect_url))
 	      return HttpResponseRedirect(redirect_url)
 	else:
 	  print("Error while creating payment:")
