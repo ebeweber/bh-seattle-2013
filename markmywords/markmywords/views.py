@@ -84,8 +84,6 @@ def update_goal_info(request, goal_id):
 	json_object=get_workouts_in_time(request, access_token, goal)
 
 	total_miles=get_total_miles(json_object, goal)
-	paths=[]
-	paths.append(get_points_from_path(get_specific_path(request,access_token, "/223098561")))
 
 	timeleft = get_time_left(goal)
 	days = timeleft.days
@@ -103,8 +101,7 @@ def update_goal_info(request, goal_id):
 		 "days": days, 
 		 "hours": hours, 
 		 "minutes": minutes,
-		 "percent_completed":float(get_total_miles(json_object, goal))/float(goal.distance)*100/1600,
-		 "paths":simplejson.dumps(paths)})
+		 "percent_completed":float(get_total_miles(json_object, goal))/float(goal.distance)*100/1600})
 
 	return HttpResponse(simplejson.dumps(json), 'application/json')
 
@@ -141,8 +138,7 @@ def goals(request, goal_id):
 			"distance": int(goal.distance), 
 			"time_left":2, "days": days, 
 			"hours": hours, "minutes": minutes,
-		 	"percent_completed": int(float(get_total_miles(json_object))/float(goal.distance)*100/1600),
->>>>>>> 3697afb08a5b9a8ddc39345a154aa7f0aeaeb46a
+		 	"percent_completed": int(float(get_total_miles(json_object, goal))/float(goal.distance)*100/1600),
 		 	"paths":simplejson.dumps(paths), 
 		 	'access_token': access_token, 
 		 	'goal_id': goal_id}))
