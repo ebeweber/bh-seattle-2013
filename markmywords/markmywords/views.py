@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect
 from goals.models import Goal
 from datetime import datetime, date, time, timedelta
 
+from django.utils import simplejson 
 import requests
 import urllib
 
@@ -78,12 +79,15 @@ def goals(request, goal_id):
 		access_token = get_access_token(request, code, redirect)
 		goal = Goal.objects.get(id=goal_id)
 		json_object=get_workouts_in_time(request, access_token, goal)
-
+		total_miles=get_total_miles(json_object)
+		paths=[]
+		paths.append(get_points_from_path(get_specific_path(request,access_token, "/223098561")))
 		t = get_template('go.html')
-		html=t.render(Context({'miles_goal': 15,
-		 "current_progress": 10, 'pledge_amount':30.00, 
-		 "avg_speed":6, "distance":3000, "time_left":2, 
-		 "percent_completed":67}))
+		html=t.render(Context({'miles_goal': goal.distance/1600,
+		 "current_progress": total_miles, 'pledge_amount':goal.money, 
+		 "avg_speed":0, "distance":3000, "time_left":2, 
+		 "percent_completed":get_total_miles(json_object)/goal.distance*100/1600,
+		 "paths":simplejson.dumps(paths)}))
 		return HttpResponse(html)
 	else:
 		return authorize(request, '%sgoal/%d' % (redirect_uri, goal_id))
