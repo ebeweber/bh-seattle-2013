@@ -46,6 +46,10 @@ def authorize(request):
 	return HttpResponseRedirect("%s?%s" % (API_AUTHORIZATION_URL, 
 		urllib.urlencode(payload)))
 
+def paypal(request):
+	return create_paypal_payment()
+
+
 def index(request):
 	if 'code' in request.GET:
 		# The user is authorized to use the app
@@ -128,7 +132,7 @@ def create_paypal_payment():
 
 	  # ###Redirect URLs
 	  "redirect_urls": {
-	    "return_url": "http://127.0.0.1:8000",
+	    "return_url": "http://127.0.0.1:8000/goal/1",
 	    "cancel_url": "http://localhost:3000/" },
 
 	  # ###Transaction
@@ -161,6 +165,7 @@ def create_paypal_payment():
 	    if link.method == "REDIRECT":
 	      redirect_url = link.href
 	      print("Redirect for approval: %s"%(redirect_url))
+	      return HttpResponseRedirect(redirect_url)
 	else:
 	  print("Error while creating payment:")
 	  print(payment.error)

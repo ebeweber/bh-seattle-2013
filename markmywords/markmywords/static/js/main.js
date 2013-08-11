@@ -8,7 +8,7 @@ $(document).ready(function() {
 
 	//event listeners
 	pledge.click(function(){
-		window.location="http://google.com";
+		window.location="http://localhost:8000/paypal";
 	})
 
 	// pledge.hover(function(){
