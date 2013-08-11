@@ -11,6 +11,7 @@ $(document).ready(function() {
 
 
 				$("#distance")[0].innerHTML = data.current_progress
+				$("#percentage")[0].innerHTML = Math.floor(data.percent_completed)
 				playerOneValue = Math.floor(data.percent_completed)
 				$('#progressOne').text(playerOneValue + "%");
 				$("#playerOne").progressbar("value", playerOneValue)
