@@ -69,7 +69,7 @@ def index(request):
 
 
 def goals(request):
-	t= get_template('goal.html')
+	t= get_template('go.html')
 	html=t.render(Context({'miles_goal': 15, "current_progress": 10, 'pledge_amount':30.00, "avg_speed":6, "distance":3000, "time_left":2, "percent_completed":67}))
 	return HttpResponse(html)
 
@@ -132,7 +132,7 @@ def create_paypal_payment():
 
 	  # ###Redirect URLs
 	  "redirect_urls": {
-	    "return_url": "http://127.0.0.1:8000/goal/1",
+	    "return_url": "http://127.0.0.1:8000/goal",
 	    "cancel_url": "http://localhost:3000/" },
 
 	  # ###Transaction
