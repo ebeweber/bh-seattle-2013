@@ -104,7 +104,7 @@ def update_goal_info(request, goal_id):
 		 "days": days, 
 		 "hours": hours, 
 		 "minutes": minutes,
-		 "percent_completed":float(get_total_miles(json_object)/goal.distance*100/1600),
+		 "percent_completed":float(get_total_miles(json_object))/float(goal.distance)*100/1600,
 		 "paths":simplejson.dumps(paths)})
 
 	return HttpResponse(simplejson.dumps(json), 'application/json')

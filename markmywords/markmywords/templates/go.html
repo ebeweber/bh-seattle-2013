@@ -11,13 +11,37 @@
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
 	<script type="text/javascript" src="{% static "js/google-maps.js" %}"></script>
 	<script type="text/javascript">
-		console.log({{paths}})
-		for (var i=0; i<{{paths}}.length; i++){
-			for (var j=0; j<{{paths}}[i].length; j++){
-				console.log({{paths}}[i][j][0]);
-				console.log({{paths}}[i][j][1]);
-			}
+
+		console.log({{paths}}[0])
+		console.log("++paths ");
+
+		var path_list;
+		var flightPlanCoordinates;
+
+		// {% for path in paths|safe %}
+		// 	console.log({{path}})
+		// // console.log({{coordinate}});
+		// 	// flightPlanCoordinates.push(new google.maps.LatLng(coordinate.0, coordinate.1))
+		// {% endfor %}
+		
+		//iterate through all paths
+		for(var pathsIDX = 0; pathsIDX < paths_length; pathsIDX++){
+				console.log("Path: " + pathsIDX)
+			//iterate through all points on a path
+				for(var ptIDX = 0; j < total_points; ptIDX++){		
+					console.log({{path|safe}}[pathsIDX][ptIDX]);
+				}
+			// flightPlanCoordinates.push(new google.maps.LatLng(path_list[0], path_list[1]));
 		}
+
+	  var flightPath = new google.maps.Polyline({
+	    path: flightPlanCoordinates,
+	    strokeColor: '#FF0000',
+	    strokeOpacity: 1.0,
+	    strokeWeight: 2
+	  });
+
+  		flightPath.setMap(map);
 	</script>
 	<script type="text/javascript" src="{% static "js/goal.js" %}"></script>
 
@@ -50,26 +74,28 @@
 </body>
 <script>
 	
-	var playerOneValue;
-	var playerTwoValue;
+	var playerOneValue = 89;
+	var playerTwoValue = 52;
 	var $progressOne = $('#progressOne')
 	var $progressTwo = $('#progressTwo')
 	var $contentArea = $('.content-area')
 	$(function() {
 		$("#playerOne").progressbar({
-			value: 99,
+			value: playerOneValue,
 			change: function() {
 				progressOne.text($("#playerOne").progressbar("value") + "%");
+				alert(1)
 			},
 			complete:function(){
 				var text = "<p class='complete-text'>Micheal Wins!</p>";
-				// text += "<img src='img/running.svg'>";
+				text += "<img src='{% static 'img/running.svg'%}'>";
 				$contentArea.html(text);
 			}
 		});
 		$("#playerTwo").progressbar({
-			value: 52,
+			value: playerTwoValue,
 			change: function() {
+				alert(1)
 				progressTwo.text($("#playerTwo").progressbar("value") + "%");
 			},
 			complete: function() {
