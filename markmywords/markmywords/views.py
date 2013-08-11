@@ -29,6 +29,7 @@ client_id = 'fde6b0c09d464fa2a9155118dbb0d6da'
 client_secret = '3d397e2bfb054a48a876e0dc5596dab1'
 redirect_uri = 'http://127.0.0.1:8000/'
 API_URL = 'https://api.runkeeper.com/fitnessActivities'
+BASE_URL='https://api.runkeeper.com'
 
 
 logging.basicConfig(level=logging.INFO)
@@ -60,6 +61,14 @@ def paypal(request):
 	goal.save()
 
 	return create_paypal_payment(amount, goal.id)
+
+def ppsupport(request):
+	print ("test")
+	amount = int(normalize_arg(request.GET['amt']))
+	distance = int(normalize_arg(request.GET['distance']))
+
+	return create_paypal_support_payment(amount, 21)
+
 
 
 def index(request):
@@ -103,7 +112,6 @@ def update_goal_info(request, goal_id):
 
 def goals(request, goal_id):
 	goal_id = int(normalize_arg(goal_id))
-
 	if 'code' in request.GET:
 		code = request.GET['code']
 		code = normalize_arg(code)
@@ -112,16 +120,18 @@ def goals(request, goal_id):
 		redirect = '%sgoal/%d' % (redirect_uri, goal_id)
 		access_token = get_access_token(request, code, redirect)
 		goal = Goal.objects.get(id=goal_id)
+		send_email_to_friend(goal)
 		json_object=get_workouts_in_time(request, access_token, goal)
 
 		total_miles=get_total_miles(json_object)
 		paths=[]
-		paths.append(get_points_from_path(get_specific_path(request,access_token, "/223098561")))
-
 		timeleft = get_time_left(goal)
 		days = timeleft.days
 		hours = timeleft.seconds / 60 / 60
 		minutes = (timeleft - timedelta(seconds=hours*60*60)).seconds / 60
+		all_workouts=get_all_workouts(request, access_token)
+		for path in get_all_individual_ids(all_workouts):
+			paths.append(get_points_from_path(get_specific_path(request,access_token, path)))
 		t = get_template('go.html')
 
 		html=t.render(Context({
@@ -159,7 +169,7 @@ def get_specific_path(request,token, specific_workout):
 	payload = {'access_token': token,}
 	headers = {'Authorization': "Bearer %s" % token,
 				'Accept': 'application/vnd.com.runkeeper.FitnessActivity+json'}
-	response=requests.get(API_URL+specific_workout, headers=headers).json()['path']
+	response=requests.get(BASE_URL+specific_workout, headers=headers).json()['path']
 	return response
 
 def get_all_workouts(request, token):
@@ -201,11 +211,66 @@ def get_points_from_path(path):
 	return [[point['longitude'], point['latitude'], point['timestamp']] for point in path]
 
 
-def send_email():
-	send_mail('Subject here', 'Here is the message.', 'from@example.com', ['amni2015@example.com'], fail_silently=False)
+def get_all_individual_ids(json_object):
+	return [item['uri'] for item in json_object]
+
+def send_email(goal):
+	send_mail('You created a goal', 'You made the goal to run %d miles by %s.  Good luck!' % (goal.distance, goal.end_date), 'team@ontherun.com', ['amni2015@gmail.com'], fail_silently=False)
+
+
+def send_email_to_friend(goal):
+	send_mail('Help Support Your Friend Matthew', 'Your friend Matthew made the goal to run %d miles by %s.  Pledge money to help him out!  You can help him by going to this <a href="127.0.0.1:8000/support/6"> address </a>' % (goal.distance, goal.end_date), 'team@ontherun.com', ['amni2015@gmail.com'], fail_silently=False)
 
 def date_to_param(date):
 	return '%d-%d-%d' % (date.year, date.month, date.day)
+
+def create_paypal_support_payment(amount, goal_id):
+	payment = paypalrestsdk.Payment({
+	  "intent":  "sale",
+
+	  # ###Payer
+	  # A resource representing a Payer that funds a payment
+	  # Payment Method as 'paypal'
+	  "payer":  {
+	    "payment_method":  "paypal" },
+
+	  # ###Redirect URLs
+	  "redirect_urls": {
+	    "return_url": "http://127.0.0.1:8000/completedsupport",
+	    "cancel_url": "http://localhost:3000/" },
+
+	  # ###Transaction
+	  # A transaction defines the contract of a
+	  # payment - what is the payment for and who
+	  # is fulfilling it.
+	  "transactions":  [ {
+
+	    # ### ItemList
+	    "item_list": {
+	      "items": [{
+	        "name": "item",
+	        "sku": "item",
+	        "price": amount,
+	        "currency": "USD",
+	        "quantity": 1 }]},
+
+	    # ###Amount
+	    # Let's you specify a payment amount.
+	    "amount":  {
+	      "total":  amount,
+	      "currency":  "USD" },
+	    "description":  "This is the payment transaction description." } ] } )
+
+	# Create Payment and return status
+	if payment.create():
+	  for link in payment.links:
+	    if link.method == "REDIRECT":
+	      redirect_url = link.href
+	      print("Redirect for approval: %s" % (redirect_url))
+	      return HttpResponseRedirect(redirect_url)
+	else:
+	  print("Error while creating payment:")
+	  print(payment.error)
 
 def create_paypal_payment(amount, goal_id):
 	payment = paypalrestsdk.Payment({
@@ -256,6 +321,20 @@ def create_paypal_payment(amount, goal_id):
 	else:
 	  print("Error while creating payment:")
 	  print(payment.error)
+
+
+def support(request, goal_id):
+	goal = Goal.objects.get(id=goal_id)
+	t = get_template('support.html')
+	html = t.render(Context({'miles_goal':goal.distance, "end_time":goal.end_date}))
+	return HttpResponse(html)
+
+
+def completedsupport(request):
+	t = get_template('supportcomplete.html')
+	html = t.render(Context({}))
+	return HttpResponse(html)
+
 
 
 

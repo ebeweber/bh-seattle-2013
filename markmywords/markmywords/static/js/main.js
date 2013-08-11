@@ -2,6 +2,7 @@ $(document).ready(function() {
 
 	var distance = $("#distance");
 	var pledge = $("#pledge");
+	var support= $("#support");
 	// .focus();
 	distance[0].selectionStart = distance[0].selectionEnd =0;
 
@@ -15,6 +16,15 @@ $(document).ready(function() {
 		amt = encodeURIComponent(amt.substring(1, amt.length));
 		
 			window.location="http://localhost:8000/paypal?distance=" + distance + 
+			"&date=" + date + "&amt=" + amt;
+	})
+
+	support.click(function(){
+		var distance = encodeURIComponent(10);
+		var date = encodeURIComponent($('#date')[0].value);
+		var amt = 30
+		
+			window.location="http://localhost:8000/ppsupport?distance=" + distance + 
 			"&date=" + date + "&amt=" + amt;
 	})
 

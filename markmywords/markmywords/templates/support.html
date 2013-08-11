@@ -1,0 +1,41 @@
+<html>
+<head>
+	{% load staticfiles %}
+
+	<link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui-1.10.3.custom.css" %}"/>
+	<link href='http://fonts.googleapis.com/css?family=Lato:100;900' rel='stylesheet' type='text/css'>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script type="text/javascript" src="{% static "js/main.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/jquery-ui-1.10.3.custom.js" %}"></script>
+	
+	<title></title>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="center-frame">
+			<div class="green-background"></div>
+			<div class="white-background">
+				<div class="text-area">	
+					<h1>Matt wants to Run</h1>
+					<input id = "distance" value={{miles_goal}} class="inputField"></input>
+					<span>mi by</span>
+					<input id="date" class="inputField" value ="11 Aug, 13"></input>
+					<br>
+					<br>
+					<br>
+					<h1>I want to help him out by donating </h1>
+					<input id="amt" value=30 class="inputField"></input>
+					<span>dollars to his cause.</span>
+					
+					<br>
+					<br>
+					<div id="support"> Support! </div>
+
+				</div>
+
+			</div>	
+		</div>
+	</div>
+</body>
+</html>
