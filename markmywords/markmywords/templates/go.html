@@ -9,7 +9,36 @@
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
 	<script type="text/javascript" src="{% static "js/google-maps.js" %}"></script>
 	<script type="text/javascript">
-		console.log({{paths|safe}})
+		console.log({{paths}}[0])
+		console.log("++paths ");
+
+		var path_list;
+		var flightPlanCoordinates;
+
+		// {% for path in paths|safe %}
+		// 	console.log({{path}})
+		// // console.log({{coordinate}});
+		// 	// flightPlanCoordinates.push(new google.maps.LatLng(coordinate.0, coordinate.1))
+		// {% endfor %}
+		
+		//iterate through all paths
+		for(var pathsIDX = 0; pathsIDX < paths_length; pathsIDX++){
+				console.log("Path: " + pathsIDX)
+			//iterate through all points on a path
+				for(var ptIDX = 0; j < total_points; ptIDX++){		
+					console.log({{path|safe}}[pathsIDX][ptIDX]);
+				}
+			// flightPlanCoordinates.push(new google.maps.LatLng(path_list[0], path_list[1]));
+		}
+
+	  var flightPath = new google.maps.Polyline({
+	    path: flightPlanCoordinates,
+	    strokeColor: '#FF0000',
+	    strokeOpacity: 1.0,
+	    strokeWeight: 2
+	  });
+
+  		flightPath.setMap(map);
 	</script>
 
 	

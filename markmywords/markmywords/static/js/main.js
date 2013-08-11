@@ -23,6 +23,9 @@ $(document).ready(function() {
 		dateFormat:"d M,y",
 		minDate: 0,
 		maxDate: "+1M"});
+
+	var val = $("#date").datepicker("getDate");
+	console.log(val)
 	// pledge.hover(function(){
 	// 	$(this).css({ "background-image": "url('../img/pledgeBgHover.jpg')" });
 	// })
