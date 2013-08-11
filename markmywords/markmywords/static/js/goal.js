@@ -9,9 +9,9 @@ $(document).ready(function() {
 			 function(data) { 
 				
 
-				$("#distance")[0].innerHTML = data.current_progress
+				$("#distance")[0].innerHTML = Math.floor(data.current_progress);
 				// playerOneValue = Math.floor(data.percent_completed)
-				playerOneValue = 100 
+				playerOneValue = 70 
 				$('#progressOne').text(playerOneValue + "%");
 				$("#playerOne").progressbar("value", playerOneValue)
 				console.log("Successs");

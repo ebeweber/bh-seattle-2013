@@ -129,10 +129,10 @@ def goals(request, goal_id):
 		 	"current_progress": float(total_miles),
 		 	'pledge_amount': goal.money, 
 			"avg_speed":0, 
-			"distance": goal.distance, 
+			"distance": int(goal.distance), 
 			"time_left":2, "days": days, 
 			"hours": hours, "minutes": minutes,
-		 	"percent_completed": float(get_total_miles(json_object))/float(goal.distance)*100/1600,
+		 	"percent_completed": int(float(get_total_miles(json_object))/float(goal.distance)*100/1600),
 		 	"paths":simplejson.dumps(paths), 
 		 	'access_token': access_token, 
 		 	'goal_id': goal_id}))
