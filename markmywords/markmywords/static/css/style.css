@@ -1,0 +1,121 @@
+body
+{
+	background-image:url(../img/background.png);
+	position:relative;
+	min-width:1324px;
+	min-height:768px;
+	height:100%;
+	font-family: 'Lato', sans-serif;
+}
+
+.inputField{
+	color: #1E509C;
+	border-radius: 0;
+	font-size: 60px;
+	width: auto;
+	outline: none;
+	border: none;
+	border-bottom: 1px solid #B8EFF2;
+	background: transparent;
+	display: inline;
+	position: relative;
+	padding: 5px 5px 5px 5px;
+	font-family: 'Lato', sans-serif;
+	font-weight: bold;
+	/*bottom: 1.5em;*/
+}
+
+.inputField:focus{
+	border-bottom: 1px solid #1E509C;
+	outline: none;
+    box-shadow: -2px 5px 3px #9ecaed;
+}
+
+#distance{
+	width: 1.6em;
+}
+
+#date{
+	width: 5.25em;
+}
+
+#amt{
+	width:2.25em;
+}
+
+#charity{
+	width: 9em;
+}
+
+.center-frame
+{
+	margin: auto;
+	height: 70%;
+	width: 80%;
+	top: 20px;
+	position:relative;
+}
+.green-background
+{
+	top:10%;
+	width:100%;
+	height:100%!important;
+	background-color:#BDD630;
+	-webkit-transform:rotate(2deg);
+	-moz-transform:rotate(2deg);
+	-o-transform:rotate(2deg);
+	-ms-transform:rotate(2deg);
+	transform:rotate(1deg);
+	position:absolute;
+}
+
+.white-background
+{
+	top:10%;
+	/*text-align: center;*/
+	height:100%;
+	width:100%;
+	background-color:#FFF;
+	border:1px solid #87c440;
+	position:absolute;
+	z-index:1;
+}
+
+.white-background .text-area{
+	top: 50px;
+	position: relative;
+	left: 200px;
+	/*text-align: center;*/
+}
+.text-area span,p,h1{
+	color: #BDD630;
+	font-size: 60px;
+	line-height: 75px;
+	text-align: left;
+	/*display:inline;*/
+	margin: 0px;
+	letter-spacing: -1;
+	/*border: 1px solid black;*/
+}
+
+.text-area span{
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+#pledge{
+	line-height: 75px;
+	font-size: 60px;
+	font-weight: 900;
+	display: block;
+	background-image: url("../img/pledgeBackground.jpg");
+	background-repeat: no-repeat;
+	color: white;
+	padding-left: 100px;
+}
+
+#pledge:hover{
+	background-image: url("../img/pledgeBgHover.jpg");
+}
+
+

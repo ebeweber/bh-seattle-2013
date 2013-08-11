@@ -12,6 +12,12 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'amni'
+EMAIL_HOST_PASSWORD = 'battlehack'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.

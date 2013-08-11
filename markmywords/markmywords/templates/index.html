@@ -1,9 +1,41 @@
-{% extends "base_template.html" %}
-{% load staticfiles %}
+<html>
+<head>
+	{% load staticfiles %}
 
-{% block title %}Mark My Words{% endblock %}
+	<link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}"/>
+	<link href='http://fonts.googleapis.com/css?family=Lato:100;900' rel='stylesheet' type='text/css'>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script type="text/javascript" src="{% static "js/main.js" %}"></script>
+	
+	<title></title>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="center-frame">
+			<div class="green-background"></div>
+			<div class="white-background">
+				<div class="text-area">	
+					<h1>I want to Run</h1>
+					<input id = "distance" value="10" class="inputField"></input>
+					<span>mi by</span>
+					<input id="date" value="Sept 5th" class="inputField"></input>
+					<br>
+					<br>
+					<br>
+					<h1>If I don't, Donate</h1>
+					<input id="amt" value="$30" class="inputField"></input>
+					<span>to</span>
 
-{% block content %}
+					<input id="charity" value="Seattle Health Org" class="inputField"></input>
+					
+					<br>
+					<br>
+					<div id="pledge"> Pledge Now </div>
 
-{% endblock %}
+				</div>
 
+			</div>	
+		</div>
+	</div>
+</body>
+</html>

@@ -13,6 +13,10 @@ import urllib
 
 import unicodedata
 import pdb
+import paypalrestsdk
+import logging
+
+from django.core.mail import send_mail
 
 API_AUTHORIZATION_URL = 'https://runkeeper.com/apps/authorize'
 API_DEAUTHORIZATION_URL = 'https://runkeeper.com/apps/de-authorize'
@@ -23,6 +27,13 @@ client_secret = '3d397e2bfb054a48a876e0dc5596dab1'
 redirect_uri = 'http://127.0.0.1:8000/'
 API_URL = 'https://api.runkeeper.com/fitnessActivities'
 
+
+logging.basicConfig(level=logging.INFO)
+
+paypalrestsdk.configure({
+  "mode": "sandbox", # sandbox or live
+  "client_id": "AWs7BhBcB_vM9tUa-Y-i_kc6hvWL59rKhTU_Y4ozRo9EzGEXicjdoc2VDT3U",
+  "client_secret": "ELE7XxC9-Zvm4kU0_h0xj_Nqhk3CelUQhJTeYwCEQ5s02iJkZHbCgD9N_9l1" })
 
 
 def authorize(request):
@@ -45,6 +56,7 @@ def index(request):
 		access_token = get_access_token(request, code)
 		json_object=get_all_workouts(request, access_token)
 		t = get_template('index.html')
+		create_paypal_payment()
 		print (get_points_from_path(get_specific_path(request,access_token, "/223098561")))
 		html = t.render(Context({}))
 		return HttpResponse(html)
@@ -89,6 +101,61 @@ def get_total_miles(json_object):
 
 def get_points_from_path(path):
 	return [[point['longitude'], point['latitude'], point['timestamp']] for point in path]
+
+
+def send_email():
+	send_mail('Subject here', 'Here is the message.', 'from@example.com', ['amni2015@example.com'], fail_silently=False)
+
+
+def create_paypal_payment():
+
+	payment = paypalrestsdk.Payment({
+	  "intent":  "sale",
+
+	  # ###Payer
+	  # A resource representing a Payer that funds a payment
+	  # Payment Method as 'paypal'
+	  "payer":  {
+	    "payment_method":  "paypal" },
+
+	  # ###Redirect URLs
+	  "redirect_urls": {
+	    "return_url": "http://127.0.0.1:8000",
+	    "cancel_url": "http://localhost:3000/" },
+
+	  # ###Transaction
+	  # A transaction defines the contract of a
+	  # payment - what is the payment for and who
+	  # is fulfilling it.
+	  "transactions":  [ {
+
+	    # ### ItemList
+	    "item_list": {
+	      "items": [{
+	        "name": "item",
+	        "sku": "item",
+	        "price": "15.00",
+	        "currency": "USD",
+	        "quantity": 1 }]},
+
+	    # ###Amount
+	    # Let's you specify a payment amount.
+	    "amount":  {
+	      "total":  "15.00",
+	      "currency":  "USD" },
+	    "description":  "This is the payment transaction description." } ] } )
+
+	# Create Payment and return status
+	if payment.create():
+	  print("Payment[%s] created successfully"%(payment.id))
+	  # Redirect the user to given approval url
+	  for link in payment.links:
+	    if link.method == "REDIRECT":
+	      redirect_url = link.href
+	      print("Redirect for approval: %s"%(redirect_url))
+	else:
+	  print("Error while creating payment:")
+	  print(payment.error)
 
 
 
