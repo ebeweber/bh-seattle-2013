@@ -67,6 +67,39 @@ def index(request):
 	html = t.render(Context({}))
 	return HttpResponse(html)
 
+def update_goal_info(request, goal_id):
+	goal_id = int(normalize_arg(goal_id))
+	access_token = request.GET['access_token']
+	
+	redirect = '%sgoal/%d' % (redirect_uri, goal_id)
+	goal = Goal.objects.get(id=goal_id)
+	json_object=get_workouts_in_time(request, access_token, goal)
+
+	total_miles=get_total_miles(json_object)
+	paths=[]
+	paths.append(get_points_from_path(get_specific_path(request,access_token, "/223098561")))
+
+	timeleft = get_time_left(goal)
+	days = timeleft.days
+	hours = timeleft.seconds / 60 / 60
+	minutes = (timeleft - timedelta(seconds=hours*60*60)).seconds / 60
+	
+
+	json = ({
+		'miles_goal': float(goal.distance/1600),
+		"current_progress": total_miles, 
+		'pledge_amount': float(goal.money), 
+		 "avg_speed":0, 
+		 "distance": float(goal.distance), 
+		 "time_left":2, 
+		 "days": days, 
+		 "hours": hours, 
+		 "minutes": minutes,
+		 "percent_completed":float(get_total_miles(json_object)/goal.distance*100/1600),
+		 "paths":simplejson.dumps(paths)})
+
+	return HttpResponse(simplejson.dumps(json), 'application/json')
+
 
 def goals(request, goal_id):
 	goal_id = int(normalize_arg(goal_id))
@@ -90,11 +123,20 @@ def goals(request, goal_id):
 		hours = timeleft.seconds / 60 / 60
 		minutes = (timeleft - timedelta(seconds=hours*60*60)).seconds / 60
 		t = get_template('go.html')
-		html=t.render(Context({'miles_goal': goal.distance/1600,
-		 "current_progress": total_miles, 'pledge_amount':goal.money, 
-		 "avg_speed":0, "distance":3000, "time_left":2, "days": days, "hours": hours, "minutes": minutes,
-		 "percent_completed":get_total_miles(json_object)/goal.distance*100/1600,
-		 "paths":simplejson.dumps(paths)}))
+
+		pdb.set_trace()
+		html=t.render(Context({
+			'miles_goal': goal.distance/1600,
+		 	"current_progress": float(total_miles),
+		 	'pledge_amount': goal.money, 
+			"avg_speed":0, 
+			"distance": goal.distance, 
+			"time_left":2, "days": days, 
+			"hours": hours, "minutes": minutes,
+		 	"percent_completed": float(get_total_miles(json_object))/float(goal.distance)*100/1600,
+		 	"paths":simplejson.dumps(paths), 
+		 	'access_token': access_token, 
+		 	'goal_id': goal_id}))
 		return HttpResponse(html)
 	else:
 		return authorize(request, '%sgoal/%d' % (redirect_uri, goal_id))

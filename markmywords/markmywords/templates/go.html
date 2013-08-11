@@ -13,6 +13,7 @@
 	<script type="text/javascript">
 		console.log({{paths|safe}})
 	</script>
+	<script type="text/javascript" src="{% static "js/goal.js" %}"></script>
 
 	
 	<title></title>
@@ -30,7 +31,7 @@
 				<div id="map-canvas" style="color: white; text-align: center"></div>
 				<div class="stat-column" style="color: white; text-align: center">
 					<h1>Your RunKeeper Statistics</h1>
-					<p>Distance: {{current_progress}}</p>
+					<p>Distance: <span id="distance">{{current_progress}}</span></p>
 					<p>Average Speed: {{avg_speed}}mph </p>
 					<p>Percentage: {{percent_completed}}%</p>
 				</div>
@@ -38,6 +39,8 @@
 			</div>	
 		</div>
 	</div>
+	<div id="access_token" style="display:none">{{ access_token }}</div>
+	<div id="goal_id" style="display:none">{{ goal_id }}</div>
 </body>
 <script>
 	
