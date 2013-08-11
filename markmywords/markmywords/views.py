@@ -7,6 +7,7 @@ from django.template.loader import get_template
 from django.template import Context
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from goals.models import Goal
 
 import requests
 import urllib
@@ -57,7 +58,6 @@ def index(request):
 
 
 def goals(request, goal_id):
-	pdb.set_trace()
 	goal_id = int(normalize_arg(goal_id))
 
 	if 'code' in request.GET:
@@ -67,8 +67,8 @@ def goals(request, goal_id):
 		
 		redirect = '%sgoal/%d' % (redirect_uri, goal_id)
 		access_token = get_access_token(request, code, redirect)
-		pdb.set_trace()
-		json_object=get_all_workouts(request, access_token)
+		goal = Goal.objects.get(id=goal_id)
+		json_object=get_workouts_in_time(request, access_token, goal)
 
 		t = get_template('go.html')
 		html=t.render(Context({'miles_goal': 15,
@@ -90,7 +90,6 @@ def get_access_token(request, code, redirect):
 		'redirect_uri': redirect}
 	
 	req = requests.post(API_ACCESS_TOKEN_URL, data=payload)
-	pdb.set_trace()
 	data = req.json()
 	return data.get('access_token')
 
@@ -107,8 +106,24 @@ def get_all_workouts(request, token):
 	headers = {'Authorization': "Bearer %s" % token,
 				'Accept': 'application/vnd.com.runkeeper.FitnessActivityFeed+json'}
 
-	pdb.set_trace()
 	response=requests.get(API_URL, headers=headers).json().get('items')
+	return response
+
+def get_workouts_in_time(request, token, goal):
+	token = normalize_arg(token)
+
+	start_param = date_to_param(goal.created_date)
+	end_param = date_to_param(goal.end_date)
+
+	payload = {'access_token': token,
+		'noEarlierThan': start_param,
+		'noLaterThan': end_param}
+	headers = {'Authorization': "Bearer %s" % token,
+		'Accept': 'application/vnd.com.runkeeper.FitnessActivityFeed+json',
+		'If-Modified-Since': 'Sun, 1 Jan 2012 00:00:00 GMT'}
+
+	response = requests.get('%s?noEarlierThan=%s&noLaterThan=%s' % (API_URL, start_param, end_param),
+	 headers=headers, data=payload).json().get('items')
 	return response
 
 def get_total_calories(json_object):
@@ -125,6 +140,8 @@ def get_points_from_path(path):
 def send_email():
 	send_mail('Subject here', 'Here is the message.', 'from@example.com', ['amni2015@example.com'], fail_silently=False)
 
+def date_to_param(date):
+	return '%d-%d-%d' % (date.year, date.month, date.day)
 
 def create_paypal_payment():
 
