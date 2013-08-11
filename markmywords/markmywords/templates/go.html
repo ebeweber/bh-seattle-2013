@@ -54,6 +54,7 @@
 			value: playerOneValue,
 			change: function() {
 				progressOne.text($("#playerOne").progressbar("value") + "%");
+				alert(1)
 			},
 			complete:function(){
 				var text = "<p class='complete-text'>Micheal Wins!</p>";
@@ -64,6 +65,7 @@
 		$("#playerTwo").progressbar({
 			value: playerTwoValue,
 			change: function() {
+				alert(1)
 				progressTwo.text($("#playerTwo").progressbar("value") + "%");
 			},
 			complete: function() {
