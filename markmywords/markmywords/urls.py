@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^$', 'markmywords.views.index', name='index'),
     url(r'^authorize', 'markmywords.views.authorize', name='authorize'),
     url(r'^goal/(?P<goal_id>\d+)/$', 'markmywords.views.goals', name='goals'),
+    url(r'^update/goal/(?P<goal_id>\d+)/$', 'markmywords.views.update_goal_info', name='update_goal'),
     url(r'^paypal', 'markmywords.views.paypal', name='paypal'),
 
 )
