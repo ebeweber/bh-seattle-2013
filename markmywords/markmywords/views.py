@@ -24,6 +24,7 @@ redirect_uri = 'http://127.0.0.1:8000/'
 API_URL = 'https://api.runkeeper.com/fitnessActivities'
 
 
+
 def authorize(request):
 	payload = {'response_type': 'code',
 		'client_id': 'fde6b0c09d464fa2a9155118dbb0d6da',
@@ -42,10 +43,9 @@ def index(request):
 		state = request.GET['state']
 		
 		access_token = get_access_token(request, code)
-		json_object=get_running_data(request, access_token)
-
-
+		json_object=get_all_workouts(request, access_token)
 		t = get_template('index.html')
+		print (get_points_from_path(get_specific_path(request,access_token, "/223098561")))
 		html = t.render(Context({}))
 		return HttpResponse(html)
 	else:
@@ -65,14 +65,30 @@ def get_access_token(request,code):
 	data = req.json()
 	return data.get('access_token')
 
-def get_running_data(request, token):
+
+def get_specific_path(request,token, specific_workout):
+	payload = {'access_token': token,}
+	headers = {'Authorization': "Bearer %s" % token,
+				'Accept': 'application/vnd.com.runkeeper.FitnessActivity+json'}
+	response=requests.get(API_URL+specific_workout, headers=headers).json()['path']
+	return response
+
+def get_all_workouts(request, token):
 	payload = {'access_token': token,}
 	headers = {'Authorization': "Bearer %s" % token,
 				'Accept': 'application/vnd.com.runkeeper.FitnessActivityFeed+json'}
-	response=requests.get(API_URL, headers=headers).json()
-	for itemNum in range(response.get("size")):
-		print (response.get('items')[itemNum].get('total_calories'))
+	response=requests.get(API_URL, headers=headers).json().get('items')
 	return response
-# def get_miles_in_time(json_object, start, end):
+
+def get_total_calories(json_object):
+	return sum([item['total_calories'] for item in json_object])
+
+def get_total_miles(json_object):
+	return sum([item['total_distance'] for item in json_object])
+
+
+def get_points_from_path(path):
+	return [[point['longitude'], point['latitude'], point['timestamp']] for point in path]
+
 
 
