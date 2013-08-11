@@ -118,4 +118,22 @@ body
 	background-image: url("../img/pledgeBgHover.jpg");
 }
 
-
+#map-canvas{
+	width: 50%;
+	height: 80%;
+	bottom: 0%;
+	float:left;
+	
+}
+.progress-bar{
+	height: 20%;
+	background-color: orange;
+	width: 100%;
+}
+.stat-column{
+	width: 50%;
+	height: 80%;
+	background-color: red;
+	float: right;
+	/*left: 50%;*/
+}
