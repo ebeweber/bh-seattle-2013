@@ -21,7 +21,8 @@ var infowindow;
 	function initialize(lat, lng) {
 
 		var mapOptions = {
-			zoom: 13,
+			zoom: 18,
+			mapTypeControl: false,
 			center: new google.maps.LatLng(lat, lng),
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
@@ -30,20 +31,57 @@ var infowindow;
 		map = new google.maps.Map(document.getElementById('map-canvas'),
 		mapOptions);
 
-		var marker = new google.maps.Marker({
+		// var marker = new google.maps.Marker({
+		// 	map: map,
+		// 	position: new google.maps.LatLng(lat, lng),
+		// 	zIndex: 1
+		// });
+
+		// google.maps.event.addListener(marker, 'click', function() {
+		// 	if (infowindow) infowindow.close();
+		// 	infowindow = new google.maps.InfoWindow({
+		// 		content: generateInfo(),
+		// 		maxWidth: 310
+		// 	});
+		// 	infowindow.open(map, marker);
+		// });
+
+		addPaths();
+
+		function addPaths(){
+			//iterate through all paths
+			for(var i = 0; i < path_list.length; i++){
+					// console.log("Path: " + i)
+					// console.log(path_list[i])
+				//iterate through all points on a path
+					for(var j = 0; j < path_list[i].length; j++){	
+						var coord = path_list[i][j]
+						var lat = path_list[i][j][1];
+						var lng = path_list[i][j][0];
+						flightPlanCoordinates.push(new google.maps.LatLng(lat, lng));
+					}
+				// flightPlanCoordinates.push(new google.maps.LatLng(path_list[0], path_list[1]));
+			}
+
+			console.log("Flight Plan: ")
+			console.log(flightPlanCoordinates)
+
+		  var flightPath = new google.maps.Polyline({
+		    path: flightPlanCoordinates,
+		    strokeColor: '#FF0000',
+		    strokeOpacity: 1.0,
+		    strokeWeight: 2
+		  });
+
+		  	map.setCenter(new google.maps.LatLng(path_list[0][0][1], path_list[0][0][0]))
+  			flightPath.setMap(map);
+
+  			var marker = new google.maps.Marker({
 			map: map,
-			position: new google.maps.LatLng(lat, lng),
+			position: new google.maps.LatLng(path_list[0][0][1], path_list[0][0][0]),
 			zIndex: 1
 		});
-
-		google.maps.event.addListener(marker, 'click', function() {
-			if (infowindow) infowindow.close();
-			infowindow = new google.maps.InfoWindow({
-				content: generateInfo(),
-				maxWidth: 310
-			});
-			infowindow.open(map, marker);
-		});
+		}
 
 	}
 

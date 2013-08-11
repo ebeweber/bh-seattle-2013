@@ -8,10 +8,18 @@ body
 	font-family: 'Lato', sans-serif;
 }
 
+h1{
+	font-weight: 400;
+}
+
+span{
+	font-weight:300;
+}
+
 .inputField{
 	color: #1E509C;
 	border-radius: 0;
-	font-size: 60px;
+	font-size: 65px;
 	width: auto;
 	outline: none;
 	border: none;
@@ -19,9 +27,9 @@ body
 	background: transparent;
 	display: inline;
 	position: relative;
-	padding: 5px 5px 5px 5px;
+	padding: 5px 15px 5px 5px;
 	font-family: 'Lato', sans-serif;
-	font-weight: bold;
+	font-weight: 700;
 	/*bottom: 1.5em;*/
 }
 
@@ -84,7 +92,7 @@ body
 .white-background .text-area{
 	top: 50px;
 	position: relative;
-	left: 200px;
+	left: 100px;
 	/*text-align: center;*/
 }
 .text-area span,p,h1{
@@ -106,7 +114,7 @@ body
 #pledge{
 	line-height: 75px;
 	font-size: 60px;
-	font-weight: 900;
+	font-weight: 700;
 	display: block;
 	background-image: url("../img/pledgeBackground.jpg");
 	background-repeat: no-repeat;
@@ -115,6 +123,21 @@ body
 }
 
 #pledge:hover{
+	background-image: url("../img/pledgeBgHover.jpg");
+}
+
+#support{
+	line-height: 75px;
+	font-size: 60px;
+	font-weight: 900;
+	display: block;
+	background-image: url("../img/pledgeBackground.jpg");
+	background-repeat: no-repeat;
+	color: white;
+	padding-left: 100px;
+}
+
+#support:hover{
 	background-image: url("../img/pledgeBgHover.jpg");
 }
 
@@ -129,7 +152,7 @@ body
 	
 }
 .content-area{
-	background-color: red;
+	
 }
 .progress-bar{
 	-moz-box-sizing: border-box;
@@ -148,6 +171,26 @@ body
 	float: right;
 	/*left: 50%;*/
 }
+
+
+#logo{
+	height: 100%;
+	width: 100%;
+	font-family: 'Merriweather', serif;
+	position:absolute;
+	/*border: 1px solid black;*/
+	padding-top: 55px;
+
+}
+
+#logo p{
+	text-align: right;
+	font-size: 180px !important;
+	margin-bottom: 100px;
+	margin-right: 20px;
+	opacity: 0.10;
+}
+
 #playerOne, #playerTwo{
 	width: 90%;
 	margin: auto;

@@ -22,5 +22,8 @@ urlpatterns = patterns('',
     url(r'^goal/(?P<goal_id>\d+)/$', 'markmywords.views.goals', name='goals'),
     url(r'^update/goal/(?P<goal_id>\d+)/$', 'markmywords.views.update_goal_info', name='update_goal'),
     url(r'^paypal', 'markmywords.views.paypal', name='paypal'),
+    url(r'^ppsupport', 'markmywords.views.ppsupport', name='ppsupport'),
+    url(r'^completedsupport', 'markmywords.views.completedsupport', name='completedsupport'),
+    url(r'^support/(?P<goal_id>\d+)/$', 'markmywords.views.support', name='support'),
 
 )
