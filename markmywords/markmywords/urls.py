@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     # Routing to the index page
     url(r'^$', 'markmywords.views.index', name='index'),
     url(r'^authorize', 'markmywords.views.authorize', name='authorize'),
-    url(r'^goal', 'markmywords.views.goals', name='goals'),
+    url(r'^goal/(?P<goal_id>\d+)/$', 'markmywords.views.goals', name='goals'),
     url(r'^paypal', 'markmywords.views.paypal', name='paypal'),
 
 )

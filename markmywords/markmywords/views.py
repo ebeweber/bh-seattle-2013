@@ -36,10 +36,10 @@ paypalrestsdk.configure({
   "client_secret": "ELE7XxC9-Zvm4kU0_h0xj_Nqhk3CelUQhJTeYwCEQ5s02iJkZHbCgD9N_9l1" })
 
 
-def authorize(request):
+def authorize(request, uri):
 	payload = {'response_type': 'code',
 		'client_id': 'fde6b0c09d464fa2a9155118dbb0d6da',
-		'redirect_uri': 'http://127.0.0.1:8000/',
+		'redirect_uri': uri,
 		'state': 2}
 	
 	print (urllib.urlencode(payload))
@@ -51,41 +51,46 @@ def paypal(request):
 
 
 def index(request):
+	t = get_template('index.html')
+	html = t.render(Context({}))
+	return HttpResponse(html)
+
+
+def goals(request, goal_id):
+	pdb.set_trace()
+	goal_id = int(normalize_arg(goal_id))
+
 	if 'code' in request.GET:
-		# The user is authorized to use the app
 		code = request.GET['code']
 		code = normalize_arg(code)
 		state = request.GET['state']
 		
-		access_token = get_access_token(request, code)
+		redirect = '%sgoal/%d' % (redirect_uri, goal_id)
+		access_token = get_access_token(request, code, redirect)
+		pdb.set_trace()
 		json_object=get_all_workouts(request, access_token)
-		t = get_template('index.html')
-		create_paypal_payment()
-		print (get_points_from_path(get_specific_path(request,access_token, "/223098561")))
-		html = t.render(Context({}))
+
+		t = get_template('go.html')
+		html=t.render(Context({'miles_goal': 15,
+		 "current_progress": 10, 'pledge_amount':30.00, 
+		 "avg_speed":6, "distance":3000, "time_left":2, 
+		 "percent_completed":67}))
 		return HttpResponse(html)
 	else:
-		return authorize(request)
-
-
-def goals(request):
-	t= get_template('go.html')
-	html=t.render(Context({'miles_goal': 15, "current_progress": 10, 'pledge_amount':30.00, "avg_speed":6, "distance":3000, "time_left":2, "percent_completed":67}))
-	return HttpResponse(html)
-
-
+		return authorize(request, '%sgoal/%d' % (redirect_uri, goal_id))
 
 def normalize_arg(arg):
 	return unicodedata.normalize('NFKD', arg).encode('ascii','ignore')
 
-def get_access_token(request,code):
+def get_access_token(request, code, redirect):
 	payload = {'grant_type': 'authorization_code',
 		'code': code,
 		'client_id': client_id,
 		'client_secret': client_secret,
-		'redirect_uri': redirect_uri,}
+		'redirect_uri': redirect}
 	
 	req = requests.post(API_ACCESS_TOKEN_URL, data=payload)
+	pdb.set_trace()
 	data = req.json()
 	return data.get('access_token')
 
@@ -101,6 +106,8 @@ def get_all_workouts(request, token):
 	payload = {'access_token': token,}
 	headers = {'Authorization': "Bearer %s" % token,
 				'Accept': 'application/vnd.com.runkeeper.FitnessActivityFeed+json'}
+
+	pdb.set_trace()
 	response=requests.get(API_URL, headers=headers).json().get('items')
 	return response
 
